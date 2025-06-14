@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom' // Add this import
-import QuantityControl from '../components/QuantityControl';
+
 
 export default function Cart() {
     const navigate = useNavigate(); // Add this hook
