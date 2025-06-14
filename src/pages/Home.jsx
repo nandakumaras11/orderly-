@@ -1,8 +1,11 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'; // Add this import at the top
 
 import FoodCard from '../components/FoodCard'
 
 export default function Home() {
+    const navigate = useNavigate(); // Add this hook
+
     const popularDishes = [
         {
             id: "margherita-pizza",
@@ -44,6 +47,12 @@ export default function Home() {
             price: "19.99"
         }
     ];
+
+    // Add click handler
+    const handleCartClick = (e) => {
+        e.preventDefault(); // Prevent default anchor behavior
+        navigate('/cart');
+    };
 
     return (
         <div
@@ -318,7 +327,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <div className="flex gap-2 border-t border-[#f4f1f1] bg-white px-4 pb-safe pt-2 fixed bottom-0 left-0 right-0">
+            <div className="flex gap-2 border-t border-[#f4f1f1] bg-white px-4 pb-2 pt-2 fixed bottom-0 left-0 right-0">
                 <a
                     className="just flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-[#171212]"
                     href="#"
@@ -346,6 +355,7 @@ export default function Home() {
                 <a
                     className="just flex flex-1 flex-col items-center justify-end gap-1 text-[#82686a]"
                     href="#"
+                    onClick={handleCartClick} // Add onClick handler
                 >
                     <div
                         className="text-[#82686a] flex h-8 items-center justify-center"
