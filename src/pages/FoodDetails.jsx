@@ -1,47 +1,32 @@
-import React, { useState } from "react";
-
-// JSON structure for food details
-const foodData = {
-    name: "Pasta Primavera",
-    basePrice: 12.99,
-    description:
-        "A vibrant medley of fresh seasonal vegetables tossed with al dente pasta in a light, creamy sauce.",
-    images: [
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuB5IofT_GD9VOw5IDbCyO29MBC4MPgYrq_xLnQRatbRosGUNSaSSMQV8BRkWOAA9Jk8aorzjh-zH7FgKnhTK7myeJbkDdTZvayFOMQET0UhVsBRl15H2-D3TEb6O2ywmHwIQwt55em00At6eu5m2itDvg_RKypTuhT2TOoB__OymMgsTTNCGth66KoCKrWAO2S8sqJ3my4TkUoEjzMlOEmq63usQ1oSLsxLBSTz_hGTRjBotNUyl247BV3lqrfGLdHsa6x6GiH9OhQ",
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuDwKvwb8yTzwZga2fIHeBqGBRkkInWaZMF3j-HZLLF3AG_HmVq-WvPQTquLObKg1M8xdYum4-NH2-_ZXCa8rXw_i3_Uig-bYEg_5a4FPgLp4UR_xD5mQfalnofW2NqqSAt_qOn1gYymaBwrpCx1gJ1PNN58spaWJnK-EIncH_EB-a8YTZB_zkkIsUy4tjxI8hl7yIONd4HWTDAvXK-YXYT12TF-AGNekr2FDrwIGX6I7lVZCnkXyRNr-cDe8tYqQ_lWBSIi2t1hmh8",
-        "https://lh3.googleusercontent.com/aida-public/AB6AXuAeeB5ENMW0cYOvmo-9WBnP3rS3IisJeSQyjRXSNbnFXIuDuFV2eMlZGRqS4pl_ZIkxw3olVqRJ_2baVON-XF_-nWCSDC_GxCc_RX9JmBJI0tilYp4J2tfcCPYwAG6f_G2luKDe-F4D-NthVaBhcqiVVJUHeFh5P3FsOggXgk1eb32ueXRLikExAwQDD1N1b7WLSggvRV9MX6Xjx2DO4PgytFzOgCbSopdJWTE_rS-u-702ZuSVn-X4WhJ3r6mrV3o8cpc_qsOiauA"
-    ],
-    // Portion prices as multipliers of base price
-    portions: [
-        { label: "Full", value: "Full", multiplier: 1 },
-        { label: "Half", value: "Half", multiplier: 0.6 },
-        { label: "1/3", value: "1/3", multiplier: 0.4 },
-        { label: "1/4", value: "1/4", multiplier: 0.3 }
-    ],
-    ingredients: [
-        "Pasta",
-        "Carrots",
-        "Zucchini",
-        "Bell Peppers",
-        "Cream",
-        "Parmesan Cheese",
-        "Garlic",
-        "Herbs",
-        "Olive Oil"
-    ],
-    preparation:
-        "Fresh vegetables are lightly sauteed with garlic and herbs, then tossed with perfectly cooked pasta and a creamy Parmesan sauce.",
-    allergens: ["Milk", "Gluten", "Seafood", "Nuts", "Soy"],
-    tasteProfile: ["Salty", "Umami"]
-};
+import React, { useState, useEffect } from "react"; // Add useEffect import
+import { useParams, useNavigate } from "react-router-dom"; // Add useNavigate
+import { foodDataMap } from "../data/foodData";
 
 const FoodDetails = () => {
+    const navigate = useNavigate(); // Add this hook
+    const { foodId } = useParams();
+    const foodData = foodDataMap[foodId];
+
+    // Add useEffect to scroll to top on component mount
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    if (!foodData) return <div>Food not found</div>;
+
+    const defaultPortion = foodData.portions?.[0] || { value: "regular", label: "Regular", multiplier: 1 };
+
     const [quantity, setQuantity] = useState(1);
-    const [selectedPortion, setSelectedPortion] = useState(foodData.portions[0].value);
+    const [selectedPortion, setSelectedPortion] = useState(defaultPortion.value);
 
     // Find the selected portion object
-    const portionObj = foodData.portions.find(p => p.value === selectedPortion);
+    const portionObj = foodData.portions?.find(p => p.value === selectedPortion) || defaultPortion;
     const price = (foodData.basePrice * (portionObj?.multiplier || 1)).toFixed(2);
+
+    // Add handler for back button
+    const handleBack = () => {
+        navigate(-1); // This will go back to the previous page
+    };
 
     return (
         <>
@@ -51,11 +36,13 @@ const FoodDetails = () => {
             >
                 <div>
                     <div className="flex items-center bg-white p-4 pb-2 justify-between">
+                        {/* Update the back button with onClick handler */}
                         <div
-                            className="text-[#171312] flex size-12 shrink-0 items-center"
+                            className="text-[#171312] flex size-12 shrink-0 items-center cursor-pointer"
                             data-icon="ArrowLeft"
                             data-size="24px"
                             data-weight="regular"
+                            onClick={handleBack}
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
