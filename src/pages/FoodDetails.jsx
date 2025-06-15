@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react"; // Add useEffect import
-import { useParams, useNavigate } from "react-router-dom"; // Add useNavigate
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { foodDataMap } from "../data/foodData";
+import QuantityControl from '../components/QuantityControl';
+import { useCart } from 'react-use-cart'; // <-- Add this import
 
 const FoodDetails = () => {
-    const navigate = useNavigate(); // Add this hook
+    const navigate = useNavigate();
     const { foodId } = useParams();
     const foodData = foodDataMap[foodId];
+    const { addItem } = useCart(); // <-- Add this hook
 
-    // Add useEffect to scroll to top on component mount
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -23,9 +25,33 @@ const FoodDetails = () => {
     const portionObj = foodData.portions?.find(p => p.value === selectedPortion) || defaultPortion;
     const price = (foodData.basePrice * (portionObj?.multiplier || 1)).toFixed(2);
 
-    // Add handler for back button
     const handleBack = () => {
-        navigate(-1); // This will go back to the previous page
+        navigate(-1);
+    };
+
+    const handleIncrease = () => {
+        setQuantity(prev => prev + 1);
+    };
+
+    const handleDecrease = () => {
+        setQuantity(prev => Math.max(1, prev - 1));
+    };
+
+    // --- Add to Cart logic using react-use-cart ---
+    const handleAddToCart = () => {
+        console.log(`Adding ${quantity} of ${foodData.name} (${selectedPortion}) to cart at $${price}`);
+
+        addItem(
+            {
+                id: foodData.id + '-' + selectedPortion, // unique per portion
+                name: foodData.name,
+                price: Number(price),
+                image: foodData.images[0],
+                portion: portionObj.label,
+            },
+            quantity
+        );
+        navigate('/cart');
     };
 
     return (
@@ -36,7 +62,6 @@ const FoodDetails = () => {
             >
                 <div>
                     <div className="flex items-center bg-white p-4 pb-2 justify-between">
-                        {/* Update the back button with onClick handler */}
                         <div
                             className="text-[#171312] flex size-12 shrink-0 items-center cursor-pointer"
                             data-icon="ArrowLeft"
@@ -198,12 +223,18 @@ const FoodDetails = () => {
                     <div className="flex justify-stretch fixed rounded-t-lg bottom-0 left-0 right-0 bg-white shadow-[0_-2px_6px_-1px_rgba(0,0,0,0.1)]">
                         <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-between">
                             <button
-                                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#f4f1f1] text-[#171312] text-base font-bold leading-normal tracking-[0.015em]"
-                                onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5   text-[#171312] text-base font-bold leading-normal tracking-[0.015em]"
                             >
-                                <span className="truncate">- {quantity} +</span>
+                                <QuantityControl
+                                    quantity={quantity}
+                                    onIncrease={handleIncrease}
+                                    onDecrease={handleDecrease}
+                                />
                             </button>
-                            <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#edc3ba] text-[#171312] text-base font-bold leading-normal tracking-[0.015em] gap-2">
+                            <button
+                                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#edc3ba] text-[#171312] text-base font-bold leading-normal tracking-[0.015em] gap-2"
+                                onClick={handleAddToCart}
+                            >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width={20}
