@@ -16,7 +16,8 @@ export const foodDataMap = {
         ingredients: ["Tomatoes", "Mozzarella", "Basil", "Olive Oil"],
         preparation: "Hand-tossed pizza dough topped with San Marzano tomatoes, fresh mozzarella, and basil",
         allergens: ["Milk", "Gluten"],
-        tasteProfile: ["Fresh", "Savory"]
+        tasteProfile: ["Fresh", "Savory"],
+        category: "main-courses"
     },
     "classic-burger": {
         id: "classic-burger",
@@ -33,7 +34,8 @@ export const foodDataMap = {
         ingredients: ["Beef Patty", "Lettuce", "Tomato", "Onion", "Special Sauce"],
         preparation: "Grilled beef patty served with fresh vegetables on a toasted bun",
         allergens: ["Gluten", "Egg", "Soy"],
-        tasteProfile: ["Savory", "Rich"]
+        tasteProfile: ["Savory", "Rich"],
+        category: "main-courses"
     },
     "sushi-platter": {
         id: "sushi-platter",
@@ -51,7 +53,8 @@ export const foodDataMap = {
         ingredients: ["Fresh Fish", "Rice", "Nori", "Vegetables"],
         preparation: "Freshly prepared sushi rolls with premium ingredients",
         allergens: ["Fish", "Shellfish", "Soy"],
-        tasteProfile: ["Fresh", "Umami"]
+        tasteProfile: ["Fresh", "Umami"],
+        category: "main-courses"
     },
     "caesar-salad": {
         id: "caesar-salad",
@@ -68,7 +71,8 @@ export const foodDataMap = {
         ingredients: ["Romaine Lettuce", "Caesar Dressing", "Croutons", "Parmesan", "Black Pepper"],
         preparation: "Fresh romaine lettuce tossed with our house-made Caesar dressing, topped with crunchy croutons and shaved parmesan",
         allergens: ["Dairy", "Gluten", "Egg"],
-        tasteProfile: ["Creamy", "Savory"]
+        tasteProfile: ["Creamy", "Savory"],
+        category: "salads"
     },
 
     "spaghetti-carbonara": {
@@ -87,7 +91,8 @@ export const foodDataMap = {
         ingredients: ["Spaghetti", "Pancetta", "Eggs", "Pecorino Romano", "Black Pepper"],
         preparation: "Al dente spaghetti tossed with crispy pancetta and a creamy sauce made from eggs and cheese",
         allergens: ["Gluten", "Egg", "Dairy"],
-        tasteProfile: ["Rich", "Creamy", "Savory"]
+        tasteProfile: ["Rich", "Creamy", "Savory"],
+        category: "main-courses"
     },
 
     "grilled-steak": {
@@ -105,6 +110,7 @@ export const foodDataMap = {
         ingredients: ["Premium Beef", "Seasonal Vegetables", "Herb Butter", "Sea Salt", "Black Pepper"],
         preparation: "Premium cut steak seasoned and grilled to your preference, served with seasonal vegetables",
         allergens: ["Dairy"],
-        tasteProfile: ["Savory", "Rich", "Smoky"]
+        tasteProfile: ["Savory", "Rich", "Smoky"],
+        category: "main-courses"
     }
 };

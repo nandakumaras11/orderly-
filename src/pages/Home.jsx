@@ -2,6 +2,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'; // Add this import at the top
 
 import FoodCard from '../components/FoodCard'
+import { categoriesData } from '../data/categoryData';
+import CategoryCard from '../components/CategoryCard';
 
 export default function Home() {
     const navigate = useNavigate(); // Add this hook
@@ -198,134 +200,14 @@ export default function Home() {
                 <h2 className="text-[#171212] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
                     Categories
                 </h2>
-                <div className="flex items-center gap-4 bg-white px-4 min-h-14 justify-between">
-                    <div className="flex items-center gap-4">
-                        <div
-                            className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-10"
-                            style={{
-                                backgroundImage:
-                                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDADiIcQJBmDMfp95SRRYfLd5nfK7bgvZLcozVrhZN0ynMvetiBKYUBB56pISvugNQfJax_p81f9tbnk-lXp4cjrHGBKmBXQmX1CAXaBC2CRP__frLYkAcCEBeLlYjin9yBEhjLIKLUtR4_f6U0-G_0qWxOqNfTMJgPgyvJ_Ud1sI2uBXVoatvcvN74NQRszeXE74E8JugEH6Hi4cX_a3rLYBPDw_LYeiAFzYvhTAvg9ILb9GmQmAkWEtecJexvO7Wc0b3e52Fh4Nk")'
-                            }}
-                        ></div>
-                        <p className="text-[#171212] text-base font-normal leading-normal flex-1 truncate">
-                            Appetizers
-                        </p>
-                    </div>
-                    <div className="shrink-0">
-                        <div
-                            className="text-[#171212] flex size-7 items-center justify-center"
-                            data-icon="CaretRight"
-                            data-size="24px"
-                            data-weight="regular"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24px"
-                                height="24px"
-                                fill="currentColor"
-                                viewBox="0 0 256 256"
-                            >
-                                <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex items-center gap-4 bg-white px-4 min-h-14 justify-between">
-                    <div className="flex items-center gap-4">
-                        <div
-                            className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-10"
-                            style={{
-                                backgroundImage:
-                                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuA3mxO5swddcR4mO6D32FGb1G0e3c9RtAfWox58GDbHYbFHWzAvQIV_FV7mepFxDM2LgQuJKLNsdqBqvmOKHSHa4YcQeY9D81VaJPIbDeDdDLuRV34Fo67id2nxo2SEZPdj4Id1QFDKMlUUjaUY5nxwqcbW9EFgOSgZyqT2IoWjQkKXDPOBNEIcDzWmeFX4XXZimkwrxo7I6NjGNu9PPU9jP7vF4EJodhTfyHaHSMnCgHXm71imVSkbCPjyLq1LS2NeQeJOtLgdh-8")'
-                            }}
-                        ></div>
-                        <p className="text-[#171212] text-base font-normal leading-normal flex-1 truncate">
-                            Main Courses
-                        </p>
-                    </div>
-                    <div className="shrink-0">
-                        <div
-                            className="text-[#171212] flex size-7 items-center justify-center"
-                            data-icon="CaretRight"
-                            data-size="24px"
-                            data-weight="regular"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24px"
-                                height="24px"
-                                fill="currentColor"
-                                viewBox="0 0 256 256"
-                            >
-                                <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex items-center gap-4 bg-white px-4 min-h-14 justify-between">
-                    <div className="flex items-center gap-4">
-                        <div
-                            className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-10"
-                            style={{
-                                backgroundImage:
-                                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBuDk-yR5OO_7iwBHl-VSFoiuMcBl5DUT9vkTSRqqyXENpvz1ihLt31D6BV7GOcoxb4V99b719DTlhO5XQUy4vbk5SZ43LBy_si8-PIkQOBcffJtWffSHZhQLNEittGp_M2Q1J3UcLmsEDjP9ASR9VSFMeXJzG_dTDqyAhk0rvFCZFIXzw4TcfoBgBtSha776VyageGfOiMZ-WbHlbjk_o4n2L8bxFOZxN2Jj05Wxz-Ctfp3wdvhNi432-CUyTzTdF_tb5XZ4WyryA")'
-                            }}
-                        ></div>
-                        <p className="text-[#171212] text-base font-normal leading-normal flex-1 truncate">
-                            Desserts
-                        </p>
-                    </div>
-                    <div className="shrink-0">
-                        <div
-                            className="text-[#171212] flex size-7 items-center justify-center"
-                            data-icon="CaretRight"
-                            data-size="24px"
-                            data-weight="regular"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24px"
-                                height="24px"
-                                fill="currentColor"
-                                viewBox="0 0 256 256"
-                            >
-                                <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex items-center gap-4 bg-white px-4 min-h-14 justify-between">
-                    <div className="flex items-center gap-4">
-                        <div
-                            className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-10"
-                            style={{
-                                backgroundImage:
-                                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDJAAg2lwFz9gBOFU_v_bHh4x8C3LY3ak6voKufQxL7mkntPTN0kwqvLXcjbirhOwe-I9LcsXW8twO-5cxPWITZLV56bm-3OF96SJGffd4XFDv-vSm5nkvCMA9SlMRaeLTOymuuVDjERq3hSo1d-hz3sX-ssq9lJRJEeKpB8t3QJfxUe1nsm7Anrk4mG3eryfgP2u5cyOkN8fMxdFzsNM3xs-6IDN3VVeP_bztspHmAy07_jQecmBDEKjP0WNQMkFMpL6sNvxnvTjo")'
-                            }}
-                        ></div>
-                        <p className="text-[#171212] text-base font-normal leading-normal flex-1 truncate">
-                            See All
-                        </p>
-                    </div>
-                    <div className="shrink-0">
-                        <div
-                            className="text-[#171212] flex size-7 items-center justify-center"
-                            data-icon="CaretRight"
-                            data-size="24px"
-                            data-weight="regular"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24px"
-                                height="24px"
-                                fill="currentColor"
-                                viewBox="0 0 256 256"
-                            >
-                                <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
+                {categoriesData.map((category) => (
+                    <CategoryCard
+                        key={category.id}
+                        id={category.id}
+                        image={category.image}
+                        name={category.name}
+                    />
+                ))}
             </div>
             <div className="flex gap-2 border-t border-[#f4f1f1] bg-white px-4 pb-2 pt-2 fixed bottom-0 left-0 right-0">
                 <a

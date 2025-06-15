@@ -220,7 +220,7 @@ const FoodDetails = () => {
                     <div className="flex items-center gap-4 bg-white px-4 min-h-14">
                         <p className="text-[#171312] text-base font-normal leading-normal flex-1 truncate" />
                     </div>
-                    <div className="flex justify-stretch fixed rounded-t-lg bottom-0 left-0 right-0 bg-white shadow-[0_-2px_6px_-1px_rgba(0,0,0,0.1)]">
+                    <div className="flex gap-2 border-t border-[#f4f1f1] bg-white px-4 pb-2 pt-2 fixed bottom-0 left-0 right-0">
                         <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-between">
                             <button
                                 className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5   text-[#171312] text-base font-bold leading-normal tracking-[0.015em]"
@@ -232,7 +232,7 @@ const FoodDetails = () => {
                                 />
                             </button>
                             <button
-                                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#edc3ba] text-[#171312] text-base font-bold leading-normal tracking-[0.015em] gap-2"
+                                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-[#f4f1f1] text-[#171312] text-base font-bold leading-normal tracking-[0.015em] gap-2"
                                 onClick={handleAddToCart}
                             >
                                 <svg
