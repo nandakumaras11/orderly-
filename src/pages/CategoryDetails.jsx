@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { categoriesData } from '../data/categoryData';
 import { foodDataMap } from '../data/foodData';
 import FoodCard from '../components/FoodCard';
+import CallButton from '../components/CallButton';
+import BottomNavigation from '../components/BottomNavigation';
 
 export default function CategoryDetails() {
     const { categoryId } = useParams();
@@ -30,6 +32,7 @@ export default function CategoryDetails() {
                 <h2 className="text-[#171312] text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center pr-12">
                     {category.name}
                 </h2>
+                <CallButton />
             </div>
 
             {categoryFoods.length > 0 ? (
@@ -65,6 +68,7 @@ export default function CategoryDetails() {
                     </p>
                 </div>
             )}
+            <BottomNavigation />
         </div>
     );
 }

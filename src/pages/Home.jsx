@@ -2,11 +2,11 @@ import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { foodDataMap } from '../data/foodData';
 import SearchResults from '../components/SearchResults';
-
+import CallButton from '../components/CallButton';
 import FoodCard from '../components/FoodCard'
 import { categoriesData } from '../data/categoryData';
 import CategoryCard from '../components/CategoryCard';
-
+import BottomNavigation from '../components/BottomNavigation';
 export default function Home() {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
@@ -93,11 +93,6 @@ export default function Home() {
         }
     ];
 
-    // Add click handler
-    const handleCartClick = (e) => {
-        e.preventDefault(); // Prevent default anchor behavior
-        navigate('/cart');
-    };
 
     return (
         <div
@@ -117,31 +112,11 @@ export default function Home() {
                     <h2 className="text-[#171212] text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">
                         Orderly
                     </h2>
-                    <div className="flex w-12 items-center justify-end">
-                        <button className="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 bg-transparent text-[#171212] gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
-                            <div
-                                className="text-[#171212]"
-                                data-icon="Phone"
-                                data-size="24px"
-                                data-weight="regular"
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24px"
-                                    height="24px"
-                                    fill="currentColor"
-                                    viewBox="0 0 256 256"
-                                >
-                                    <path d="M222.37,158.46l-47.11-21.11-.13-.06a16,16,0,0,0-15.17,1.4,8.12,8.12,0,0,0-.75.56L134.87,160c-15.42-7.49-31.34-23.29-38.83-38.51l20.78-24.71c.2-.25.39-.5.57-.77a16,16,0,0,0,1.32-15.06l0-.12L97.54,33.64a16,16,0,0,0-16.62-9.52A56.26,56.26,0,0,0,32,80c0,79.4,64.6,144,144,144a56.26,56.26,0,0,0,55.88-48.92A16,16,0,0,0,222.37,158.46ZM176,208A128.14,128.14,0,0,1,48,80,40.2,40.2,0,0,1,82.87,40a.61.61,0,0,0,0,.12l21,47L83.2,111.86a6.13,6.13,0,0,0-.57.77,16,16,0,0,0-1,15.7c9.06,18.53,27.73,37.06,46.46,46.11a16,16,0,0,0,15.75-1.14,8.44,8.44,0,0,0,.74-.56L168.89,152l47,21.05h0s.08,0,.11,0A40.21,40.21,0,0,1,176,208Z"></path>
-                                </svg>
-                            </div>
-                        </button>
-                    </div>
+                    <CallButton />
                 </div>
                 <div className="px-4 pb-3 pt-2">
                     <label className="relative flex w-full items-center">
                         <div className="flex h-12 w-full items-center overflow-hidden rounded-xl bg-[#f4f1f1]">
-                            {/* Search Icon */}
                             <div className="absolute left-3 flex items-center justify-center text-[#82686a]">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -280,57 +255,8 @@ export default function Home() {
                     </>
                 )}
             </div>
-            <div className="flex gap-2 border-t border-[#f4f1f1] bg-white px-4 pb-2 pt-2 fixed bottom-0 left-0 right-0">
-                <a
-                    className="just flex flex-1 flex-col items-center justify-end gap-1 rounded-full text-[#171212]"
-                    href="#"
-                >
-                    <div
-                        className="text-[#171212] flex h-8 items-center justify-center"
-                        data-icon="House"
-                        data-size="24px"
-                        data-weight="fill"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24px"
-                            height="24px"
-                            fill="currentColor"
-                            viewBox="0 0 256 256"
-                        >
-                            <path d="M224,115.55V208a16,16,0,0,1-16,16H168a16,16,0,0,1-16-16V168a8,8,0,0,0-8-8H112a8,8,0,0,0-8,8v40a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V115.55a16,16,0,0,1,5.17-11.78l80-75.48.11-.11a16,16,0,0,1,21.53,0,1.14,1.14,0,0,0,.11.11l80,75.48A16,16,0,0,1,224,115.55Z"></path>
-                        </svg>
-                    </div>
-                    <p className="text-[#171212] text-xs font-medium leading-normal tracking-[0.015em]">
-                        Home
-                    </p>
-                </a>
-                <a
-                    className="just flex flex-1 flex-col items-center justify-end gap-1 text-[#82686a]"
-                    href="#"
-                    onClick={handleCartClick} // Add onClick handler
-                >
-                    <div
-                        className="text-[#82686a] flex h-8 items-center justify-center"
-                        data-icon="ShoppingCart"
-                        data-size="24px"
-                        data-weight="regular"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24px"
-                            height="24px"
-                            fill="currentColor"
-                            viewBox="0 0 256 256"
-                        >
-                            <path d="M222.14,58.87A8,8,0,0,0,216,56H54.68L49.79,29.14A16,16,0,0,0,34.05,16H16a8,8,0,0,0,0,16h18L59.56,172.29a24,24,0,0,0,5.33,11.27,28,28,0,1,0,44.4,8.44h45.42A27.75,27.75,0,0,0,152,204a28,28,0,1,0,28-28H83.17a8,8,0,0,1-7.87-6.57L72.13,152h116a24,24,0,0,0,23.61-19.71l12.16-66.86A8,8,0,0,0,222.14,58.87ZM96,204a12,12,0,1,1-12-12A12,12,0,0,1,96,204Zm96,0a12,12,0,1,1-12-12A12,12,0,0,1,192,204Zm4-74.57A8,8,0,0,1,188.1,136H69.22L57.59,72H206.41Z"></path>
-                        </svg>
-                    </div>
-                    <p className="text-[#82686a] text-xs font-medium leading-normal tracking-[0.015em]">
-                        Cart
-                    </p>
-                </a>
-            </div>
+            <BottomNavigation />
+
             {/* Add padding to main content to prevent overlap with fixed navigation */}
             <div className="pb-[72px]" />
         </div>
