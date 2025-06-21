@@ -1,16 +1,29 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { foodDataMap } from '../data/foodData';
 import SearchResults from '../components/SearchResults';
 import CallButton from '../components/CallButton';
 import FoodCard from '../components/FoodCard'
-import { categoriesData } from '../data/categoryData';
 import CategoryCard from '../components/CategoryCard';
 import BottomNavigation from '../components/BottomNavigation';
+import useApi from '../utils/hooks/useApi'; // Make sure this import exists
+
 export default function Home() {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearching, setIsSearching] = useState(false);
+
+    // API state
+    const { get, loading: apiLoading, error: apiError } = useApi();
+    const [homeData, setHomeData] = useState(null);
+
+    useEffect(() => {
+        get('/home_page_data').then((res) => {
+            console.log(res);
+
+            if (res) setHomeData(res);
+        });
+    }, []);
 
     // Debounce search to improve performance
     const debounce = (func, wait) => {
@@ -51,49 +64,15 @@ export default function Home() {
         )
         : [];
 
-    const popularDishes = [
-        {
-            id: "margherita-pizza",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAMKDzDpLxMT2hshJ3bB5AE71-40lUMSNejdQf5AyTZai0A4sBM4aU9Yd5BmD6qGr1uJj8wVJQgqGzoES9b-lMX4dL2LuKApQRLAYMJhRcngoQbNcODJpcQj4D6JnNGJK8DisSqj_zkSII0E3SlUiIi49QELktjFUC93r1xMF-tZL-msPrUHZ0oiQqZQiroincWFBGJM9HCRw1Ad6FKh3agSU4_5vzIgJrXItstMpN8cmjB9xrvbnb5rBv-OHl7VD2QisjbFA3lVq0",
-            name: "Margherita Pizza",
-            price: "12.99"
-        },
-        {
-            id: "classic-burger",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDJHlJbul42TQohE6-fM-3ezbNxUDFBqx4LjArY-Q_M8hdaEaXO-2nEKm1N_Q6xjKUIv0fftMpevAxke7-YgNZ4q1k5fPg6Amexl7JBQ65pzKo2sGKVTX5-mMbB8emTuci5KFwiKKWOC2Dc8FkdbE0rfVr-g4d27WVMDJsuKad2JFNrGWp29ZAj5PNGA928RuZ4yeb6Hg8ZwIw_EqprlZOVc6ejmn83DAF5MbFjUWMqBDrIapvzH8oc8cjytXdE0iUWIDK7gQtAQSw",
-            name: "Classic Burger",
-            price: "9.99"
-        },
-        {
-            id: "sushi-platter",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA5RCiHUANFtK2kjNNZEKoJbms4HWx6f1C5bWesE3G23nDlwzkYo_N1u0bGXJZRGo9N6dRNVJQLfC5nkDqDUo1r_kwmKZBPo_XlJc3xw3C2d75wE9mz-I3xfYXWlnkgLal0wGKDcGRnGmBeOJvpElhxN7HM-f8PcWFQFzv3NXFLaeT7m0aJ2aV11C_NUQlFLmQ3eJkmwidWckRKw30EpX7raRw5qoKflM0aHWSQ-CgxbNQ6aldPzTssj4Dv4Z24Ujw30KA7UjHZWrU",
-            name: "Sushi Platter",
-            price: "15.99"
-        }
-    ];
+    // Use API data if available, fallback to empty arrays
+    const banners = homeData?.banners || [];
+    const popularDishes = homeData?.popular_dishes || [];
+    const todaysSpecials = homeData?.todays_specials || [];
+    const categories = homeData?.categories || [];
+    useEffect(() => {
+        console.log(banners, popularDishes, todaysSpecials, categories);
 
-    const todaysSpecials = [
-        {
-            id: "caesar-salad",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCcYinT_tNxQAjMhG89jTWvmaaS95_Qiz8yq5if5QxzxUqPo9X5bo3nh2SP5oDJb3rKMK0nWxqF8W9GZBF3mi_cL_dp2_QfEgytF4sBdmSpT8X2UHElLexOFyWNwdtT8_ZY_mcWdt9Qw4YysloijyObe-JjhWd_BUoZgYV5rTJ2glapCJTQu4HQq2-dZwMmDxCi4HNQT7SeMy1pUo7XJDGb2-9Vphz1SJzO8c2C-GkWyYAyPAeOgMvgyas5bOVrtAuAeqP3FRGLkoA",
-            name: "Caesar Salad",
-            price: "8.99"
-        },
-        {
-            id: "spaghetti-carbonara",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuD1mK07vui-VxPEsbcURcnET0EIzR_kFpV6Nq5dPwKxFHKgnvgX1wFQouqfvobXEpvVCMLMkGWxhv0LSzmCwBAvZpYLsHq7zi1TYiGprqoGzUDT2ZpcqGn1hKUF3GgDv-SQUrwINJ2hrFOT4Wt8pa5HLHaqgIK7CbQLdSO_HqwUaCkHcyDprNzTwm80hhyrNEBTkz5co2RetUD_7zJDahHUchCEcVI6U1dn4cckjXQkCd6w50WCf01D1pWqRac0RzbHJPc7Oc8H8bA",
-            name: "Spaghetti Carbonara",
-            price: "14.99"
-        },
-        {
-            id: "grilled-steak",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAVplIk3hX6YA2XsCDfVrB-jg3BUiXgoEM25Wls_eOzZ-1Ozbj7GVkddfJ_jBHWd6z-LsqozXHlgpfEynusfZxmxP7OxJNRoiDn8Irq8p-567vKiTnD2QICbCMwKeZoi0tiADcrWW6OovBt8MXDzIzH7vj4_YkmiL9GFzTVFndv6MM2UDnCSMQ8pqIq0T8rKNVYXLkflkdoTP49T6SwGUB46Pca4emMBllFr1jY3IN_7Y001W9u8WA1GladEzAdCXEHuoW0epn-QvM",
-            name: "Grilled Steak",
-            price: "19.99"
-        }
-    ];
-
-
+    })
     return (
         <div
             className="relative flex size-full min-h-screen flex-col bg-white justify-between group/design-root overflow-x-hidden"
@@ -166,44 +145,32 @@ export default function Home() {
                     />
                 ) : (
                     <>
+                        {/* Banners from API */}
                         <div className="flex overflow-x-auto overflow-y-hidden [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                             <div className="flex items-stretch p-4 gap-3 snap-x snap-mandatory">
-                                <div className="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[280px] sm:min-w-60 snap-start">
+                                {apiLoading && (
+                                    <div className="text-[#82686a]">Loading...</div>
+                                )}
+                                {apiError && (
+                                    <div className="text-red-500">Failed to load banners</div>
+                                )}
+                                {banners.map((banner) => (
                                     <div
-                                        className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col"
-                                        style={{
-                                            backgroundImage:
-                                                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDmvwxWvc_D8VzHshFZV7emvN4_3l7curnrgXnSkt13p_e7LJtjin2HUew2mEaa5M6ef4ZuAkIrYcCy7QhFhdBdu4iS5N0mOkbBUSD-ns4rgU4wQII3TV5V8rjOazX92NJmQxkgn4Waf_mg7tL02OQQ9S8PB7KLA4WYWmpH61Q9JOQ8fvzKw1OIqSahjFm4PD3jv_UysNvlRRFRd6JypMmqIPjPC0cBdsVzN00U_OArgZHrAFVIKgW2ptXDbKhVgIP7WMneJZVW2KI")'
-                                        }}
-                                    ></div>
-                                    <p className="text-[#171212] text-base font-medium leading-normal">
-                                        Special Offer: 20% off on all orders
-                                    </p>
-                                </div>
-                                <div className="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[280px] sm:min-w-60 snap-start">
-                                    <div
-                                        className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col"
-                                        style={{
-                                            backgroundImage:
-                                                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuB3QavMI08d0smFEHoRk33PFOEJjep5hiWIyIm7hr0KWeB8mUpr2j0IlsYPzK99nWSc5ibdNeI8x0MtIua9oDVu4-HSBWvW-YUUnBE3FrDjSe_eIdKC1S1KTZwyVXLgUUElJ7U6vQ7sp7XWpr_GGzz5vMbusMf1TLobJyv51imXhg25mufDufbV0LKpxNBZ6eQbH9efk3IZ2Hk8SFg5PejPuLZLPrcJLU6B_DOWhgZ_rAULvqBNpSR0dNVY1Y9FR6Oru14EzQm-V0k")'
-                                        }}
-                                    ></div>
-                                    <p className="text-[#171212] text-base font-medium leading-normal">
-                                        New Menu Items Available
-                                    </p>
-                                </div>
-                                <div className="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[280px] sm:min-w-60 snap-start">
-                                    <div
-                                        className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col"
-                                        style={{
-                                            backgroundImage:
-                                                'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBVhzclkXNks-xR04C5mrhR5brx3Khmg479zbI6Z3Gd7mW0NC9_rmoSua0Dr_tdhbdV_QPfcFFvkwuC7AfcAH6urcwIririA-EVY0I375yHyFN7YXrVfqo_BUejRKR5gFBYRwd9Sk5A5bU5cr5G0wBCJr3aC-6_mlzSevtFVoar_ETBL_txEmGKG-ODr40mZL-nEN9O644VFbYIN5qYoihancSugqR9z7ptCq4cRgFibxhoHtqMnWO2zoJEq9YOgItYBdlZ0ywg3LE")'
-                                        }}
-                                    ></div>
-                                    <p className="text-[#171212] text-base font-medium leading-normal">
-                                        Featured Dish: Chef's Special
-                                    </p>
-                                </div>
+                                        key={banner.id}
+                                        className="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[280px] sm:min-w-60 snap-start"
+                                    >
+                                        <div
+                                            className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col"
+                                            style={{
+                                                backgroundImage: `url("${banner.image_url}")`
+                                            }}
+                                        ></div>
+                                        <p className="text-[#171212] text-base font-medium leading-normal">
+                                            {banner.title}
+                                            {banner.dish?.name ? `: ${banner.dish.name}` : ''}
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                         {/* Popular Dishes Section */}
@@ -212,13 +179,15 @@ export default function Home() {
                         </h2>
                         <div className="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                             <div className="flex items-stretch p-4 gap-3">
-                                {popularDishes.map((dish, index) => (
+                                {popularDishes.map((dish) => (
                                     <FoodCard
                                         key={dish.id}
                                         id={dish.id}
-                                        image={dish.image}
+                                        image='/placeholderfood.png'
+                                        // image={dish.image}
                                         name={dish.name}
-                                        price={dish.price}
+                                        price={dish.base_price}
+                                        description={dish.description}
                                     />
                                 ))}
                             </div>
@@ -230,13 +199,18 @@ export default function Home() {
                         </h2>
                         <div className="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                             <div className="flex items-stretch p-4 gap-3">
-                                {todaysSpecials.map((dish, index) => (
+                                {todaysSpecials.length === 0 && (
+                                    <div className="text-[#82686a]">No specials for today</div>
+                                )}
+                                {todaysSpecials.map((item) => (
                                     <FoodCard
-                                        key={dish.id}
-                                        id={dish.id}
-                                        image={dish.image}
-                                        name={dish.name}
-                                        price={dish.price}
+                                        key={item.id}
+                                        id={item.id}
+                                        // image={item.image}
+                                        image='/placeholderfood.png'
+                                        name={item.name}
+                                        price={item.base_price}
+                                        description={item.description}
                                     />
                                 ))}
                             </div>
@@ -244,14 +218,17 @@ export default function Home() {
                         <h2 className="text-[#171212] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
                             Categories
                         </h2>
-                        {categoriesData.map((category) => (
-                            <CategoryCard
-                                key={category.id}
-                                id={category.id}
-                                image={category.image}
-                                name={category.name}
-                            />
-                        ))}
+                        <div>
+                            {categories.map((category) => (
+                                <CategoryCard
+                                    key={category.id}
+                                    id={category.id}
+                                    // image={category.image}
+                                    image='/placeholderfood.png'
+                                    name={category.name}
+                                />
+                            ))}
+                        </div>
                     </>
                 )}
             </div>
@@ -260,6 +237,5 @@ export default function Home() {
             {/* Add padding to main content to prevent overlap with fixed navigation */}
             <div className="pb-[72px]" />
         </div>
-
     )
 }
