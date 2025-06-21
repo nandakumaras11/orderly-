@@ -7,6 +7,8 @@ import FoodCard from '../components/FoodCard'
 import CategoryCard from '../components/CategoryCard';
 import BottomNavigation from '../components/BottomNavigation';
 import useApi from '../utils/hooks/useApi'; // Make sure this import exists
+import Skeleton from 'react-loading-skeleton'; // Import Skeleton
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -14,15 +16,17 @@ export default function Home() {
     const [isSearching, setIsSearching] = useState(false);
 
     // API state
-    const { get, loading: apiLoading, error: apiError } = useApi();
+    const { get } = useApi();
     const [homeData, setHomeData] = useState(null);
+    const [apiLoading, setApiLoading] = useState(true); // <-- add this
 
     useEffect(() => {
-        get('/home_page_data').then((res) => {
-            console.log(res);
-
-            if (res) setHomeData(res);
-        });
+        setApiLoading(true); // <-- set loading true before API call
+        get('/home_page_data')
+            .then((res) => {
+                if (res) setHomeData(res);
+            })
+            .finally(() => setApiLoading(false)); // <-- set loading false after API call
     }, []);
 
     // Debounce search to improve performance
@@ -148,29 +152,32 @@ export default function Home() {
                         {/* Banners from API */}
                         <div className="flex overflow-x-auto overflow-y-hidden [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                             <div className="flex items-stretch p-4 gap-3 snap-x snap-mandatory">
-                                {apiLoading && (
-                                    <div className="text-[#82686a]">Loading...</div>
-                                )}
-                                {apiError && (
-                                    <div className="text-red-500">Failed to load banners</div>
-                                )}
-                                {banners.map((banner) => (
-                                    <div
-                                        key={banner.id}
-                                        className="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[280px] sm:min-w-60 snap-start"
-                                    >
+                                {apiLoading ? (
+                                    Array(2).fill(0).map((_, idx) => (
+                                        <div key={idx} className="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[280px] sm:min-w-60 snap-start">
+                                            <Skeleton height={120} borderRadius={12} />
+                                            <Skeleton width={120} height={20} />
+                                        </div>
+                                    ))
+                                ) : (
+                                    banners.map((banner) => (
                                         <div
-                                            className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col"
-                                            style={{
-                                                backgroundImage: `url("${banner.image_url}")`
-                                            }}
-                                        ></div>
-                                        <p className="text-[#171212] text-base font-medium leading-normal">
-                                            {banner.title}
-                                            {banner.dish?.name ? `: ${banner.dish.name}` : ''}
-                                        </p>
-                                    </div>
-                                ))}
+                                            key={banner.id}
+                                            className="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-[280px] sm:min-w-60 snap-start"
+                                        >
+                                            <div
+                                                className="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col"
+                                                style={{
+                                                    backgroundImage: `url("${banner.image_url}")`
+                                                }}
+                                            ></div>
+                                            <p className="text-[#171212] text-base font-medium leading-normal">
+                                                {banner.title}
+                                                {banner.dish?.name ? `: ${banner.dish.name}` : ''}
+                                            </p>
+                                        </div>
+                                    ))
+                                )}
                             </div>
                         </div>
                         {/* Popular Dishes Section */}
@@ -179,17 +186,26 @@ export default function Home() {
                         </h2>
                         <div className="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                             <div className="flex items-stretch p-4 gap-3">
-                                {popularDishes.map((dish) => (
-                                    <FoodCard
-                                        key={dish.id}
-                                        id={dish.id}
-                                        image='/placeholderfood.png'
-                                        // image={dish.image}
-                                        name={dish.name}
-                                        price={dish.base_price}
-                                        description={dish.description}
-                                    />
-                                ))}
+                                {apiLoading ? (
+                                    Array(3).fill(0).map((_, idx) => (
+                                        <div key={idx} className="w-40">
+                                            <Skeleton height={100} borderRadius={12} />
+                                            <Skeleton height={20} width={80} style={{ marginTop: 8 }} />
+                                            <Skeleton height={16} width={60} />
+                                        </div>
+                                    ))
+                                ) : (
+                                    popularDishes.map((dish) => (
+                                        <FoodCard
+                                            key={dish.id}
+                                            id={dish.id}
+                                            image='/placeholderfood.png'
+                                            name={dish.name}
+                                            price={dish.base_price}
+                                            description={dish.description}
+                                        />
+                                    ))
+                                )}
                             </div>
                         </div>
 
@@ -199,35 +215,51 @@ export default function Home() {
                         </h2>
                         <div className="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                             <div className="flex items-stretch p-4 gap-3">
-                                {todaysSpecials.length === 0 && (
+                                {apiLoading ? (
+                                    Array(2).fill(0).map((_, idx) => (
+                                        <div key={idx} className="w-40">
+                                            <Skeleton height={100} borderRadius={12} />
+                                            <Skeleton height={20} width={80} style={{ marginTop: 8 }} />
+                                            <Skeleton height={16} width={60} />
+                                        </div>
+                                    ))
+                                ) : todaysSpecials.length === 0 ? (
                                     <div className="text-[#82686a]">No specials for today</div>
+                                ) : (
+                                    todaysSpecials.map((item) => (
+                                        <FoodCard
+                                            key={item.id}
+                                            id={item.id}
+                                            image='/placeholderfood.png'
+                                            name={item.name}
+                                            price={item.base_price}
+                                            description={item.description}
+                                        />
+                                    ))
                                 )}
-                                {todaysSpecials.map((item) => (
-                                    <FoodCard
-                                        key={item.id}
-                                        id={item.id}
-                                        // image={item.image}
-                                        image='/placeholderfood.png'
-                                        name={item.name}
-                                        price={item.base_price}
-                                        description={item.description}
-                                    />
-                                ))}
                             </div>
                         </div>
                         <h2 className="text-[#171212] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
                             Categories
                         </h2>
                         <div>
-                            {categories.map((category) => (
-                                <CategoryCard
-                                    key={category.id}
-                                    id={category.id}
-                                    // image={category.image}
-                                    image='/placeholderfood.png'
-                                    name={category.name}
-                                />
-                            ))}
+                            {apiLoading ? (
+                                Array(5).fill(0).map((_, idx) => (
+                                    <div key={idx} className="flex items-center gap-3 mb-3">
+                                        <Skeleton circle width={48} height={48} />
+                                        <Skeleton width={100} height={20} />
+                                    </div>
+                                ))
+                            ) : (
+                                categories.map((category) => (
+                                    <CategoryCard
+                                        key={category.id}
+                                        id={category.id}
+                                        image='/placeholderfood.png'
+                                        name={category.name}
+                                    />
+                                ))
+                            )}
                         </div>
                     </>
                 )}
